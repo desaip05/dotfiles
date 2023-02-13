@@ -1,0 +1,51 @@
+dotfiles
+
+Configure your SSH setup with multiple SSH keypairs
+
+* This link is easy to follow (Thanks Eric): http://code.tutsplus.com/tutorials/quick-tip-how-to-work-with-github-and-multiple-accounts--net-22574
+* Generating SSH keys (Win/msysgit): https://help.github.com/articles/generating-an-ssh-key/
+Relevant steps from the first link:
+1. Generate an SSH-key: ssh-keygen -t ed25519 -C "desaip05@doe.example.com"
+2. Follow the prompts and decide a name, e.g. id_ed25519_example_company.
+3. Copy the SSH public-key to GitHub from ~/.ssh/id_ed25519_doe_company.pub and tell ssh about the key: ssh-add ~/.ssh/id_ed25519_doe_company
+4. Create a config file in ~/.ssh with the following contents: Host github-doe-company HostName github.com User git IdentityFile ~/.ssh/id_ed25519_doe_company
+5. Add your remote: git remote add origin git@github-doe-company:username/repo.git
+6. or change using: git remote set-url origin git@github-doe-company:username/repo.git
+
+
+
+Some of you may require different emails to be used for different repositories, from git 2.13 you can set the email on a directory basis by editing the global config file found at: ~/.gitconfig using conditionals like so:
+[user]
+    name = Default Name
+    email = defaultemail@example.com
+
+[includeIf "gitdir:~/work/"]
+    path = ~/work/.gitconfig
+And then your work-specific config ~/work/.gitconfig would look like this:
+[user]
+    name = Pavan Kataria
+    email = pavan.kataria@example.com
+
+Setup multiple git identities & git user informations
+https://gist.github.com/bgauduch/06a8c4ec2fec8fef6354afe94358c89e
+
+
+Use GitBare repo to manage dotfiles
+https://stegosaurusdormant.com/bare-git-repo/
+
+https://www.youtube.com/watch?v=tBoLDpTWVOM
+
+git init --bare $HOME/dotfiles
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME' (add this alias to .bashrc)
+bash
+config config --local status.showUntrackedFiles no
+
+Basic usage example:
+
+config add /path/to/file
+config commit -m "A short message"
+config push
+
+https://dev.to/bowmanjd/store-home-directory-config-files-dotfiles-in-git-using-bash-zsh-or-powershell-the-bare-repo-approach-35l3
+
+
